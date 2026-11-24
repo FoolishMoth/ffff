@@ -3,22 +3,27 @@ package com.example.workoutreminder.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.workoutreminder.data.WorkoutEntry
 import com.example.workoutreminder.viewmodel.WorkoutViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkoutScreen(viewModel: WorkoutViewModel) {
     val entries by viewModel.entries.collectAsState()
-    val daysOfWeek = listOf("Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье")
+    val daysOfWeek = listOf(
+        "Понедельник", "Вторник", "Среда", "Четверг",
+        "Пятница", "Суббота", "Воскресенье"
+    )
 
     Scaffold(
         topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
             TopAppBar(
                 title = { Text("План тренировок") },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -41,7 +46,9 @@ fun WorkoutScreen(viewModel: WorkoutViewModel) {
                 WorkoutDayCard(
                     dayName = daysOfWeek[index],
                     existingInstruction = existing?.instruction ?: "",
-                    onSave = { instruction -> viewModel.saveInstruction(dayNumber, instruction) }
+                    onSave = { instruction ->
+                        viewModel.saveInstruction(dayNumber, instruction)
+                    }
                 )
             }
         }
@@ -74,8 +81,8 @@ fun WorkoutDayCard(
                 )
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
-                        imageVector = if (expanded) androidx.compose.material.icons.Icons.Default.KeyboardArrowUp 
-                                      else androidx.compose.material.icons.Icons.Default.KeyboardArrowDown,
+                        imageVector = if (expanded) Icons.Default.KeyboardArrowUp
+                                      else Icons.Default.KeyboardArrowDown,
                         contentDescription = if (expanded) "Свернуть" else "Развернуть"
                     )
                 }
@@ -92,7 +99,7 @@ fun WorkoutDayCard(
                     minLines = 3
                 )
                 Button(
-                    onClick = { 
+                    onClick = {
                         onSave(text)
                         expanded = false
                     },
